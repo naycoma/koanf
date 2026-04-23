@@ -59,6 +59,7 @@ func (p *Walk) Read() (map[string]any, error) {
 		return nil, errors.New("no matching files found")
 	}
 	k := koanf.New(".")
+	loadedCnt := 0
 	for _, item := range p.Files {
 		if !item.MatchSuffix(string(p.Suffix)) {
 			continue
@@ -66,6 +67,10 @@ func (p *Walk) Read() (map[string]any, error) {
 		if err := k.Load(file.Provider(item.Path), p.Parser); err != nil {
 			return nil, err
 		}
+		loadedCnt++
+	}
+	if loadedCnt == 0 {
+		return nil, errors.New("no matching files found with the specified suffix")
 	}
 	return k.Raw(), nil
 }
