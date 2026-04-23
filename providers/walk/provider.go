@@ -8,11 +8,11 @@ import (
 )
 
 // 指定されたディレクトリとファイル名を用いてwalkする Provider
-// 1. name1.yml
-// 2. child/name1.yml
-// 3. name1@[suf].yml
-// 4. child/name1@[suf].yml
-// 5. name2.yml
+//  1. name1.yml
+//  2. child/name1.yml
+//  3. name1@[suf].yml
+//  4. child/name1@[suf].yml
+//  5. name2.yml
 func Provider(parser koanf.Parser, root string, fileNames ...string) *Walk {
 	return &Walk{
 		Parser: parser,

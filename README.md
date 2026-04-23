@@ -6,7 +6,7 @@ Provider置き場
 
 ### Providers
 
-Install with go get -u `github.com/naycoma/koanf/providers/$provider`
+Install with `go get -u github.com/naycoma/koanf/providers/$provider`
 
 | Package | Provider                                                               | Description    |
 | ------- | ---------------------------------------------------------------------- | -------------- |
