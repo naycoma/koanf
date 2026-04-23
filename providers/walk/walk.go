@@ -11,8 +11,8 @@ import (
 
 type File struct {
 	Path      string
-	Name      string // full filename (e.g. "device@test.yaml")
-	BaseName  string // base name without @suffix and extension (e.g. "device")
+	Name      string // full filename (e.g. "name@suffix.yaml")
+	BaseName  string // base name without @suffix and extension (e.g. "name")
 	Suffix    string // suffix after @, empty if none
 	Extension string // file extension (e.g. ".yaml")
 	Depth     int    // path separator count, used for priority
