@@ -18,6 +18,13 @@ type File struct {
 	Depth     int    // path separator count, used for priority
 }
 
+func (f File) MatchSuffix(key string) bool {
+	if f.Suffix == "" {
+		return true
+	}
+	return strings.EqualFold(f.Suffix, key)
+}
+
 func walkDir(root, baseName, extRe string) ([]*File, error) {
 	re, err := regexp.Compile(`^?` + regexp.QuoteMeta(baseName) + `(@(.*))?\.` + extRe + `$`)
 	if err != nil {

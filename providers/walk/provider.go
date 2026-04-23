@@ -60,7 +60,7 @@ func (p *Walk) Read() (map[string]any, error) {
 	}
 	k := koanf.New(".")
 	for _, item := range p.Files {
-		if item.Suffix != "" && item.Suffix != p.Suffix {
+		if !item.MatchSuffix(string(p.Suffix)) {
 			continue
 		}
 		if err := k.Load(file.Provider(item.Path), p.Parser); err != nil {
