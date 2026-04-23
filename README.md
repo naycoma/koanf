@@ -8,12 +8,12 @@ Provider置き場
 
 Install with `go get -u github.com/naycoma/koanf/providers/$provider`
 
-| Package | Provider                                                               | Description    |
-| ------- | ---------------------------------------------------------------------- | -------------- |
-| fetch   | `fetch.Provider(url string)`                                           | URL Fetching   |
-| gist    | `gist.Provider(user string, id string, file string)`                   | GitHub Gist    |
-| mongo   | `mongo.Provider(uri, database, collection string, filter ...bson.M)`   | MongoDB (BSON) |
-| walk    | `walk.Provider(parser koanf.Parser, root string, fileNames ...string)` | WalkDir        |
+| Package | Provider                                                                             | Description    |
+| ------- | ------------------------------------------------------------------------------------ | -------------- |
+| fetch   | `fetch.Provider(url string)`                                                         | URL Fetching   |
+| gist    | `gist.Provider(user string, id string, file string)`                                 | GitHub Gist    |
+| mongo   | `mongo.Provider(uri, database, collection string, filter ...bson.M)`                 | MongoDB (BSON) |
+| walk    | `walk.Provider(parser koanf.Parser, root string, fileName string, suffix ...string)` | WalkDir        |
 
 ### Parsers
 

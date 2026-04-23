@@ -2,6 +2,7 @@ package walk
 
 import (
 	"errors"
+	"sync"
 
 	"github.com/knadh/koanf/providers/file"
 	"github.com/knadh/koanf/v2"
@@ -13,11 +14,12 @@ import (
 //  3. name1@[suf].yml
 //  4. child/name1@[suf].yml
 //  5. name2.yml
-func Provider(parser koanf.Parser, root string, fileNames ...string) *Walk {
+func Provider(parser koanf.Parser, root string, fileName string, suffix ...string) *Walk {
 	return &Walk{
 		Parser: parser,
 		Root:   root,
-		Names:  fileNames,
+		Names:  []string{fileName},
+		Suffix: append(suffix, "")[0],
 	}
 }
 
@@ -27,6 +29,18 @@ type Walk struct {
 	Parser koanf.Parser
 	Root   string
 	Names  []string
+	Suffix string
+	Files  []*File
+	loaded sync.Once
+}
+
+func (p *Walk) WalkFiles() error {
+	files, err := sortedPriorityWalk(p.Root, p.Names...)
+	if err != nil {
+		return err
+	}
+	p.Files = files
+	return nil
 }
 
 func (p *Walk) ReadBytes() ([]byte, error) {
@@ -34,15 +48,21 @@ func (p *Walk) ReadBytes() ([]byte, error) {
 }
 
 func (p *Walk) Read() (map[string]any, error) {
-	sortedPriorityWalks, err := sortedPriorityWalk(p.Root, p.Names...)
+	var err error
+	p.loaded.Do(func() {
+		err = p.WalkFiles()
+	})
 	if err != nil {
 		return nil, err
 	}
-	if len(sortedPriorityWalks) == 0 {
+	if len(p.Files) == 0 {
 		return nil, errors.New("no matching files found")
 	}
 	k := koanf.New(".")
-	for _, item := range sortedPriorityWalks {
+	for _, item := range p.Files {
+		if item.Suffix != "" && item.Suffix != p.Suffix {
+			continue
+		}
 		if err := k.Load(file.Provider(item.Path), p.Parser); err != nil {
 			return nil, err
 		}
